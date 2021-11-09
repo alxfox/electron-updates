@@ -8,7 +8,7 @@ const {
   dialog,
 } = require("electron");
 const fs = require("fs");
-//  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
+//  newest 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
 function saveFile() {
   console.log("Saving the file");
   const window = BrowserWindow.getFocusedWindow();
