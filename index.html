@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doc</title>
+    <link
+      rel="stylesheet"
+      href="./node_modules/simplemde/dist/simplemde.min.css"
+    />
+    <script src="./node_modules/simplemde/dist/simplemde.min.js"></script>
+  </head>
+  <body ondrop="dropHandler(event);">
+    <textarea id="editor"></textarea>
+    <script>
+      function dropHandler(event) {
+        event.preventDefault();
+        if (event.dataTransfer.items[0].kind === "file") {
+          var file = event.dataTransfer.items[0].getAsFile();
+          var reader = new FileReader();
+          reader.onload = (e) => {
+            editor.value(e.target.result)
+          };
+          reader.readAsText(file);
+        }
+      }
+
+      var editor = new SimpleMDE({
+        element: document.getElementById("editor"),
+      });
+      const { ipcRenderer } = require("electron");
+      ipcRenderer.on("load", (event, arg) => {
+        if (arg) {
+          editor.value(arg);
+        }
+      });
+      ipcRenderer.on("editor-event", (event, arg) => {
+        console.log(arg);
+        // send message back to main process
+        event.sender.send("editor-reply", `Received ${arg}`);
+        if (arg === "save") {
+          event.sender.send("save", editor.value());
+        }
+        if (arg === "toggle-bold") {
+          editor.toggleBold();
+        }
+      });
+      ipcRenderer.send("editor-reply", "Page Loaded");
+    </script>
+    <style>
+      html,
+      body {
+        height: 100%;
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+      }
+      .CodeMirror {
+        flex: 1;
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+{
+  "name": "markdown-editor",
+  "version": "1.2.2",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "set DEBUG=true & electron .",
+    "publish:github": "electron-builder -p always",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dist:windows": "electron-builder"
+  },
+  "build": {
+    "appId": "com.my.markdown-editor",
+    "mac": {
+      "category": "your.app.category.type"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false
+    },
+    "linux": {
+      "category": "your.app.category.type",
+      "target": "AppImage"
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "alxfox",
+      "repo": "electron-updates-priv"
+    }
+  },
+  "keywords": [],
+  "author": "alex",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^15.3.0",
+    "electron-builder": "^22.13.1"
+  },
+  "dependencies": {
+    "electron-updater": "^4.3.9",
+    "gitignore": "^0.7.0",
+    "simplemde": "^1.11.2"
+  }
+}
